@@ -15,11 +15,20 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        
+        // Blue Guardian Variants
+        hero: "gradient-hero text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 font-semibold",
+        primary: "gradient-primary text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300",
+        success: "bg-success text-success-foreground hover:bg-success/90 shadow-md",
+        accent: "gradient-accent text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300",
+        pending: "bg-pending text-pending-foreground hover:bg-pending/90",
+        glassmorphism: "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-300",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
+        xl: "h-14 rounded-lg px-10 text-base font-semibold",
         icon: "h-10 w-10",
       },
     },

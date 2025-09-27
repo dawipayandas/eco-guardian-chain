@@ -1,42 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Blue Guardian Design System - Eco-Tech Trust Aesthetic */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Blue Guardian Color Palette */
+    --background: 183 8% 97%; /* Off-White #F7F9F9 */
+    --foreground: 0 0% 20%; /* Charcoal Grey #333333 */
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 20%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Deep Teal Green #00796B */
+    --primary: 174 100% 24%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 174 100% 35%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Leaf Green #4CAF50 */
+    --secondary: 122 40% 49%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Accent: Sunset Orange #FF7043 */
+    --accent: 14 100% 63%;
+    --accent-foreground: 0 0% 98%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 183 8% 95%;
+    --muted-foreground: 0 0% 45%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 183 8% 90%;
+    --input: 183 8% 90%;
+    --ring: 174 100% 24%;
 
-    --radius: 0.5rem;
+    --success: 122 40% 49%;
+    --success-foreground: 0 0% 98%;
+
+    --warning: 45 100% 60%;
+    --warning-foreground: 0 0% 98%;
+
+    --pending: 14 100% 63%;
+    --pending-foreground: 0 0% 98%;
+
+    --radius: 0.75rem;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(122 40% 60%));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(14 100% 70%));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / 0.9), hsl(0 0% 100% / 0.6));
+
+    /* Shadows */
+    --shadow-card: 0 4px 20px -2px hsl(var(--primary) / 0.1);
+    --shadow-card-hover: 0 8px 30px -4px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +130,105 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Inter', sans-serif;
   }
+}
+
+@layer components {
+  /* Blue Guardian UI Components */
+  .card-elevated {
+    @apply bg-card rounded-lg shadow-[var(--shadow-card)] border border-border/50 transition-[var(--transition-smooth)] hover:shadow-[var(--shadow-card-hover)];
+  }
+
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-secondary {
+    background: var(--gradient-secondary);
+  }
+
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .stat-card {
+    @apply card-elevated p-6 text-center group cursor-pointer hover:scale-[1.02] transition-[var(--transition-bounce)];
+  }
+
+  .stat-number {
+    @apply text-3xl font-bold text-primary mb-2 transition-[var(--transition-smooth)] group-hover:scale-110;
+  }
+
+  .floating-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .project-card {
+    @apply card-elevated overflow-hidden cursor-pointer transition-[var(--transition-smooth)] hover:scale-[1.02] hover:shadow-[var(--shadow-card-hover)];
+  }
+
+  .verification-step {
+    @apply flex items-center space-x-4 p-4 rounded-lg bg-muted/50 border border-primary/20 transition-[var(--transition-smooth)];
+  }
+
+  .ai-processing {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .blockchain-mint {
+    animation: shimmer 3s ease-in-out infinite;
+  }
+}
+
+@layer utilities {
+  .animate-counter {
+    animation: counter 2s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .animate-progress {
+    animation: progress 3s ease-out forwards;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 20px hsl(var(--primary-glow) / 0.2); }
+  to { box-shadow: 0 0 40px hsl(var(--primary-glow) / 0.4); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes counter {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes progress {
+  from { width: 0%; }
+  to { width: 100%; }
 }
