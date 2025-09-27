@@ -62,14 +62,22 @@ const NGODashboard = () => {
             />
           </div>
 
-          {/* CTA Button */}
-          <div className="text-center mb-8">
+          {/* CTA Buttons */}
+          <div className="text-center mb-8 space-y-4">
             <Link to="/ngo/submit-project">
               <Button variant="hero" size="xl">
                 <Plus className="w-5 h-5" />
                 Submit New Restoration Project
               </Button>
             </Link>
+            <div className="flex justify-center space-x-4">
+              <Link to="/ngo/verification-management">
+                <Button variant="outline">
+                  <CheckCircle className="w-4 h-4 mr-2" />
+                  Verification Center
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

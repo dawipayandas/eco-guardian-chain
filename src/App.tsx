@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
 import NGODashboard from "./pages/NGODashboard";
 import VerificationFlow from "./pages/VerificationFlow";
+import ProjectSubmission from "./pages/ProjectSubmission";
+import VerificationManagement from "./pages/VerificationManagement";
 import InvestorMarketplace from "./pages/InvestorMarketplace";
 import ProjectDetail from "./pages/ProjectDetail";
 import InvestorPortfolio from "./pages/InvestorPortfolio";
@@ -22,6 +24,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/ngo" element={<NGODashboard />} />
+          <Route path="/ngo/submit-project" element={<ProjectSubmission />} />
+          <Route path="/ngo/verification-management" element={<VerificationManagement />} />
           <Route path="/ngo/verification" element={<VerificationFlow />} />
           <Route path="/investor" element={<InvestorMarketplace />} />
           <Route path="/investor/project/:id" element={<ProjectDetail />} />
