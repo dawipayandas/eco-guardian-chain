@@ -131,6 +131,18 @@ const CommunityVerification = () => {
           status: 'approved',
           tokensEarned: 10,
           reviewedBy: ['user-002', 'user-003']
+        },
+        {
+          id: '3',
+          projectId: '3',
+          projectTitle: 'Kerala Backwater Restoration',
+          submittedBy: 'Community Member #3',
+          ngoName: 'Green Earth Initiative',
+          location: 'Coordinates: 9.4981°N, 76.3388°E',
+          photos: [],
+          notes: 'Restoration area shows excellent progress. New growth visible across 80% of planted area.',
+          timestamp: new Date('2024-03-25'),
+          status: 'pending'
         }
       ];
     }
@@ -292,6 +304,7 @@ const CommunityVerification = () => {
       </header>
 
       <div className="container mx-auto px-6 py-8">
+
         {/* Tab Navigation */}
         <div className="flex space-x-1 mb-8 bg-muted p-1 rounded-lg max-w-2xl">
           <button
@@ -317,7 +330,7 @@ const CommunityVerification = () => {
           {/* Satellite tab temporarily disabled for debugging */}
         </div>
 
-        {activeTab === 'submit' ? (
+        {activeTab === 'submit' && (
           // Submit Verification Tab
           <div className="max-w-2xl">
             <Card>
@@ -448,7 +461,154 @@ const CommunityVerification = () => {
               </CardContent>
             </Card>
           </div>
-        ) : activeTab === 'verify' ? (
+        )}
+
+        {activeTab === 'verify' && (
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold">Peer Review Queue</h2>
+                <p className="text-muted-foreground">Review submissions from other community members</p>
+              </div>
+              <div className="flex items-center space-x-4 text-sm">
+                <div className="flex items-center space-x-2">
+                  <Users className="w-4 h-4" />
+                  <span>3 Active Reviewers</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Shield className="w-4 h-4" />
+                  <span>Consensus Required: 2/3</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Submissions List */}
+            {submissions.map((submission) => (
+              <Card key={submission.id} className="overflow-hidden">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle className="text-lg">{submission.projectTitle}</CardTitle>
+                      <p className="text-sm text-muted-foreground">
+                        Submitted by {submission.submittedBy} • {new Date(submission.timestamp).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <Badge variant={
+                      submission.status === 'approved' ? 'default' :
+                      submission.status === 'rejected' ? 'destructive' : 'secondary'
+                    }>
+                      <CheckCircle className="w-3 h-3 mr-1" />
+                      {submission.status.charAt(0).toUpperCase() + submission.status.slice(1)}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="font-medium mb-2 flex items-center">
+                        <MapPin className="w-4 h-4 mr-1" />
+                        Location
+                      </h4>
+                      <p className="text-sm text-muted-foreground">{submission.location}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-2">NGO</h4>
+                      <p className="text-sm text-muted-foreground">{submission.ngoName}</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium mb-2">Verification Notes</h4>
+                    <p className="text-sm text-muted-foreground">{submission.notes}</p>
+                  </div>
+
+                  {submission.tokensEarned && (
+                    <div className="bg-success/10 border border-success/20 rounded-lg p-3">
+                      <div className="flex items-center space-x-2">
+                        <Coins className="w-4 h-4 text-success" />
+                        <span className="text-sm font-medium text-success">
+                          Earned {submission.tokensEarned} BGT Tokens
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {submission.status === 'pending' && (
+                    <div className="flex space-x-3 pt-4 border-t">
+                      <Button
+                        variant="default"
+                        size="sm"
+                        onClick={() => handleVerificationAction(submission.id, 'approve')}
+                        className="flex-1 bg-success hover:bg-success/90"
+                        disabled={isAnalyzing}
+                      >
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Approve & Earn Tokens
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleVerificationAction(submission.id, 'reject')}
+                        className="flex-1"
+                        disabled={isAnalyzing}
+                      >
+                        <AlertCircle className="w-4 h-4 mr-2" />
+                        Reject
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+
+            {/* AI Analysis Modal */}
+            {isAnalyzing && (
+              <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
+                <Card className="w-full max-w-lg mx-4">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <Zap className="w-5 h-5 animate-pulse text-primary" />
+                      <span>AI Analysis in Progress</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Progress value={analysisProgress} className="h-2" />
+                    <div className="space-y-2">
+                      {verificationSteps.map((step, index) => (
+                        <div 
+                          key={step.id} 
+                          className={`flex items-center space-x-3 p-2 rounded-lg transition-all ${
+                            index < analysisStep 
+                              ? 'bg-success/10 text-success' 
+                              : index === analysisStep 
+                                ? 'bg-primary/10 text-primary animate-pulse' 
+                                : 'text-muted-foreground'
+                          }`}
+                        >
+                          {index < analysisStep ? (
+                            <CheckCircle className="w-4 h-4" />
+                          ) : index === analysisStep ? (
+                            <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <Clock className="w-4 h-4" />
+                          )}
+                          <div>
+                            <p className="font-medium text-sm">{step.title}</p>
+                            <p className="text-xs opacity-75">{step.description}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
+        )}
+        
+        {/* Full peer review content - temporarily disabled */}
+        {false && activeTab === 'verify' && (
           // Peer Review Tab
           <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -511,6 +671,7 @@ const CommunityVerification = () => {
               </div>
             )}
 
+
             {submissions.map((submission) => (
               <Card key={submission.id} className="overflow-hidden">
                 <CardHeader>
@@ -518,7 +679,7 @@ const CommunityVerification = () => {
                     <div>
                       <CardTitle className="text-lg">{submission.projectTitle}</CardTitle>
                       <p className="text-sm text-muted-foreground">
-                        Submitted by {submission.submittedBy} • {submission.timestamp.toLocaleDateString()}
+                        Submitted by {submission.submittedBy} • {new Date(submission.timestamp).toLocaleDateString()}
                       </p>
                     </div>
                     <Badge variant={
@@ -631,13 +792,6 @@ const CommunityVerification = () => {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        ) : (
-          <div className="space-y-6">
-            <div className="text-center py-8">
-              <h3 className="text-lg font-semibold">Satellite Analysis</h3>
-              <p className="text-muted-foreground mt-2">Feature temporarily disabled for stability</p>
-            </div>
           </div>
         )}
       </div>
