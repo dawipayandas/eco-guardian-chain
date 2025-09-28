@@ -157,34 +157,48 @@ export const mockCarbonCredits: CarbonCredit[] = [
   },
 ];
 
-// Verification Steps for Animation
+// Enhanced Verification Steps with Satellite Analysis
 export const verificationSteps = [
   {
     id: 1,
-    title: '[AI] Cross-Referencing Satellite Imagery...',
-    description: 'Analyzing canopy density and vegetation indices',
-    duration: 3000,
-    data: { canopyDensity: '85%', vegetationIndex: '0.72' }
+    title: '[SATELLITE] Fetching High-Resolution Imagery...',
+    description: 'Accessing Sentinel-2 and Landsat data from Google Earth Engine',
+    duration: 2500,
+    data: { resolution: '10m', cloudCover: '5%', source: 'Sentinel-2' }
   },
   {
     id: 2,
-    title: '[AI] Calculating Carbon Sequestration...',
-    description: 'Computing CO₂ absorption rates',
-    duration: 4000,
-    data: { co2Amount: 150 }
+    title: '[AI] Analyzing Vegetation Indices...',
+    description: 'Computing NDVI, EVI, and SAVI from multispectral data',
+    duration: 3500,
+    data: { ndvi: '0.72', evi: '0.58', savi: '0.65' }
   },
   {
     id: 3,
-    title: '[BLOCKCHAIN] Minting Secure NFT on Polygon...',
-    description: 'Creating immutable certificate',
-    duration: 3000,
-    data: { transactionHash: '0x1a2b3c4d5e6f7890abcdef1234567890abcdef12' }
+    title: '[AI] Change Detection Analysis...',
+    description: 'Comparing before/after imagery for restoration progress',
+    duration: 4000,
+    data: { areaIncrease: '23%', densityImprovement: '45%' }
   },
   {
     id: 4,
-    title: 'Success! 150 Carbon Credits Minted',
-    description: 'Project verified and credits issued',
+    title: '[AI] Carbon Sequestration Modeling...',
+    description: 'Estimating CO₂ absorption based on biomass analysis',
+    duration: 3000,
+    data: { co2Potential: '150 tons/year', confidence: '87%' }
+  },
+  {
+    id: 5,
+    title: '[BLOCKCHAIN] Minting Verified NFT Certificate...',
+    description: 'Creating immutable proof-of-restoration on Polygon',
+    duration: 2500,
+    data: { transactionHash: '0x1a2b3c4d5e6f7890abcdef1234567890abcdef12' }
+  },
+  {
+    id: 6,
+    title: 'Success! Satellite-Verified Credits Issued',
+    description: 'AI analysis complete - restoration authenticity confirmed',
     duration: 2000,
-    data: { creditsIssued: 150 }
+    data: { creditsIssued: 150, verificationScore: '94%' }
   }
 ];

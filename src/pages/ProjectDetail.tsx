@@ -16,9 +16,11 @@ import {
   Calendar,
   BarChart3,
   X,
-  CheckCircle
+  CheckCircle,
+  Satellite
 } from 'lucide-react';
 import { mockProjects } from '@/data/mockData';
+import { SatelliteViewer } from '@/components/SatelliteViewer';
 import mangroveProject from '@/assets/mangrove-project.jpg';
 import satelliteImage from '@/assets/satellite-mangrove.jpg';
 
@@ -281,6 +283,46 @@ const ProjectDetail = () => {
                   <div className="text-sm text-muted-foreground mb-1">Total CO₂</div>
                   <div className="text-lg font-bold">{project.totalCO2.toLocaleString()} Tons</div>
                 </div>
+              </div>
+              
+              {/* Satellite Analysis Section */}
+              <div className="bg-gradient-to-r from-blue-50 to-green-50 p-6 rounded-lg border border-blue-200">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-semibold text-lg flex items-center space-x-2">
+                    <Satellite className="w-5 h-5 text-blue-600" />
+                    <span>Satellite Verification</span>
+                  </h4>
+                  <Shield className="w-5 h-5 text-green-600" />
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                  <div className="text-center p-3 bg-white/70 rounded-lg">
+                    <div className="text-sm font-medium text-blue-700">94%</div>
+                    <div className="text-xs text-muted-foreground">AI Confidence</div>
+                  </div>
+                  <div className="text-center p-3 bg-white/70 rounded-lg">
+                    <div className="text-sm font-medium text-green-700">0.72</div>
+                    <div className="text-xs text-muted-foreground">NDVI Score</div>
+                  </div>
+                  <div className="text-center p-3 bg-white/70 rounded-lg">
+                    <div className="text-sm font-medium text-purple-700">23%</div>
+                    <div className="text-xs text-muted-foreground">Area Growth</div>
+                  </div>
+                  <div className="text-center p-3 bg-white/70 rounded-lg">
+                    <div className="text-sm font-medium text-orange-700">10m</div>
+                    <div className="text-xs text-muted-foreground">Resolution</div>
+                  </div>
+                </div>
+                
+                <p className="text-sm text-muted-foreground mb-3">
+                  Verified through AI analysis of Sentinel-2 satellite imagery with Google Earth Engine. 
+                  Real-time monitoring confirms healthy mangrove growth and carbon sequestration.
+                </p>
+                
+                <Button variant="outline" size="sm" className="text-blue-600 border-blue-200">
+                  <Satellite className="w-4 h-4 mr-2" />
+                  View Full Analysis
+                </Button>
               </div>
               
               {project.status === 'verified' ? (
