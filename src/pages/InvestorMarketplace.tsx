@@ -59,7 +59,7 @@ const InvestorMarketplace = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <StatCard
               title="Total Invested"
-              value={`$${mockInvestorStats.totalInvested.toLocaleString()}`}
+              value={`₹${mockInvestorStats.totalInvested.toLocaleString()}`}
               icon={<DollarSign className="w-8 h-8" />}
               color="primary"
             />
@@ -160,7 +160,7 @@ const InvestorMarketplace = () => {
                     </div>
                     <div className="flex items-center space-x-1">
                       <DollarSign className="w-4 h-4 text-accent" />
-                      <span>${project.pricePerCredit}/Credit</span>
+                      <span>₹{project.pricePerCredit}/Credit</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <TrendingUp className="w-4 h-4 text-primary" />

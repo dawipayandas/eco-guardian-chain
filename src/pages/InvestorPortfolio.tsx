@@ -58,7 +58,7 @@ const InvestorPortfolio = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <StatCard
             title="Portfolio Value"
-            value={`$${totalPortfolioValue.toLocaleString()}`}
+            value={`₹${totalPortfolioValue.toLocaleString()}`}
             icon={<DollarSign className="w-8 h-8" />}
             color="primary"
           />
@@ -126,11 +126,11 @@ const InvestorPortfolio = () => {
                       </div>
                       <div>
                         <span className="text-muted-foreground">Price:</span>
-                        <div className="font-semibold">${credit.pricePerCredit}/credit</div>
+                        <div className="font-semibold">₹{credit.pricePerCredit}/credit</div>
                       </div>
                       <div>
                         <span className="text-muted-foreground">Total Value:</span>
-                        <div className="font-semibold">${credit.totalPrice.toLocaleString()}</div>
+                        <div className="font-semibold">₹{credit.totalPrice.toLocaleString()}</div>
                       </div>
                       <div>
                         <span className="text-muted-foreground">NFT Token:</span>

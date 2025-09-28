@@ -40,7 +40,7 @@ const Landing = () => {
                 </Button>
               </Link>
               <Link to="/community-verification">
-                <Button variant="outline" size="xl" className="w-full sm:w-auto text-white border-white/30 hover:bg-white/10">
+                <Button variant="outline" size="xl" className="w-full sm:w-auto text-white border-white/30 bg-transparent hover:bg-white/10 backdrop-blur-sm transition-all duration-300">
                   <Users className="w-5 h-5" />
                   Community Verifier
                 </Button>

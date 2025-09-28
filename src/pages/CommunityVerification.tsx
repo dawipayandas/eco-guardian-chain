@@ -170,15 +170,19 @@ const CommunityVerification = () => {
   };
 
   const handleVerificationAction = async (submissionId: string, action: 'approve' | 'reject') => {
-    const submission = submissions.find(s => s.id === submissionId);
-    if (!submission) return;
-    
-    // Prevent NGO from reviewing their own project
-    const project = mockProjects.find(p => p.id === submission.projectId);
-    if (project && submission.ngoName === project.ngoName && submission.submittedBy.includes('NGO')) {
-      alert('NGOs cannot review their own projects. Community members only.');
-      return;
-    }
+    try {
+      const submission = submissions.find(s => s.id === submissionId);
+      if (!submission) {
+        console.error('Submission not found:', submissionId);
+        return;
+      }
+      
+      // Prevent NGO from reviewing their own project
+      const project = mockProjects.find(p => p.id === submission.projectId);
+      if (project && submission.ngoName === project.ngoName && submission.submittedBy.includes('NGO')) {
+        alert('NGOs cannot review their own projects. Community members only.');
+        return;
+      }
     
     // Start analysis animation
     setIsAnalyzing(true);
@@ -202,7 +206,7 @@ const CommunityVerification = () => {
     
     // Final result
     const tokensEarned = action === 'approve' ? Math.floor(Math.random() * 6) + 5 : 0; // 5-10 tokens
-    const finalSubmissions = submissions.map(s => 
+    const finalSubmissions = updatedSubmissions.map(s => 
       s.id === submissionId 
         ? { 
             ...s, 
@@ -228,6 +232,13 @@ const CommunityVerification = () => {
       alert(`Verification approved! You earned ${tokensEarned} BGT tokens.`);
     } else {
       alert('Verification rejected. No tokens awarded.');
+    }
+    } catch (error) {
+      console.error('Error in verification action:', error);
+      alert('An error occurred during verification. Please try again.');
+      setIsAnalyzing(false);
+      setAnalysisStep(0);
+      setAnalysisProgress(0);
     }
   };
 
@@ -346,12 +357,15 @@ const CommunityVerification = () => {
                       id="photo-upload"
                       capture="environment"
                     />
-                    <label htmlFor="photo-upload">
-                      <Button variant="outline" size="sm" className="cursor-pointer">
-                        <Camera className="w-4 h-4 mr-2" />
-                        Choose Photos
-                      </Button>
-                    </label>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="cursor-pointer"
+                      onClick={() => document.getElementById('photo-upload')?.click()}
+                    >
+                      <Camera className="w-4 h-4 mr-2" />
+                      Choose Photos
+                    </Button>
                     {photos.length > 0 && (
                       <div className="mt-3">
                         <p className="text-sm text-primary font-medium mb-2">

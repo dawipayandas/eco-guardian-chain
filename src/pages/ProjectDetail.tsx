@@ -275,7 +275,7 @@ const ProjectDetail = () => {
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-1">Price / Credit</div>
-                  <div className="text-lg font-bold">${project.pricePerCredit}</div>
+                  <div className="text-lg font-bold">₹{project.pricePerCredit}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-1">Total CO₂</div>
@@ -299,7 +299,7 @@ const ProjectDetail = () => {
                         className="flex-1"
                       />
                       <div className="text-sm font-medium">
-                        Total: ${totalPurchaseAmount.toLocaleString()}
+                        Total: ₹{totalPurchaseAmount.toLocaleString()}
                       </div>
                       <Button 
                         variant="primary" 

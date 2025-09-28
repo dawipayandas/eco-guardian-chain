@@ -112,7 +112,7 @@ const NGODashboard = () => {
                         </div>
                         <div className="flex items-center space-x-1">
                           <DollarSign className="w-4 h-4 text-accent" />
-                          <span>${(project.creditsAvailable * project.pricePerCredit).toLocaleString()}</span>
+                          <span>₹{(project.creditsAvailable * project.pricePerCredit).toLocaleString()}</span>
                         </div>
                       </div>
                     </div>
