@@ -20,7 +20,7 @@ import {
   Satellite
 } from 'lucide-react';
 import { mockProjects } from '@/data/mockData';
-import { SatelliteViewer } from '@/components/SatelliteViewer';
+// import { SatelliteViewer } from '@/components/SatelliteViewer';
 import mangroveProject from '@/assets/mangrove-project.jpg';
 import satelliteImage from '@/assets/satellite-mangrove.jpg';
 

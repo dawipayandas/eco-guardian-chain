@@ -26,9 +26,9 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { mockProjects, verificationSteps } from '@/data/mockData';
-import { SatelliteViewer } from '@/components/SatelliteViewer';
-import { TimeSeriesMonitor } from '@/components/TimeSeriesMonitor';
-import { satelliteService, SatelliteAnalysisResult } from '@/services/satelliteService';
+// import { SatelliteViewer } from '@/components/SatelliteViewer';
+// import { TimeSeriesMonitor } from '@/components/TimeSeriesMonitor';
+// import { satelliteService, SatelliteAnalysisResult } from '@/services/satelliteService';
 
 interface VerificationSubmission {
   id: string;
@@ -54,7 +54,7 @@ interface UserProfile {
 }
 
 const CommunityVerification = () => {
-  const [activeTab, setActiveTab] = useState<'submit' | 'verify' | 'satellite'>('submit');
+  const [activeTab, setActiveTab] = useState<'submit' | 'verify'>('submit');
   const [selectedProject, setSelectedProject] = useState('');
   const [photos, setPhotos] = useState<File[]>([]);
   const [location, setLocation] = useState('');
@@ -63,7 +63,7 @@ const CommunityVerification = () => {
   const [analysisStep, setAnalysisStep] = useState(0);
   const [analysisProgress, setAnalysisProgress] = useState(0);
   const [submissions, setSubmissions] = useState<VerificationSubmission[]>([]);
-  const [satelliteAnalysis, setSatelliteAnalysis] = useState<SatelliteAnalysisResult | null>(null);
+  // const [satelliteAnalysis, setSatelliteAnalysis] = useState<SatelliteAnalysisResult | null>(null);
   const [showSatelliteModal, setShowSatelliteModal] = useState(false);
   
   // Current user profile (simulated)
@@ -314,17 +314,7 @@ const CommunityVerification = () => {
           >
             Peer Review
           </button>
-          <button
-            onClick={() => setActiveTab('satellite')}
-            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-              activeTab === 'satellite'
-                ? 'bg-background text-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Satellite className="w-4 h-4 mr-1 inline" />
-            Satellite Analysis
-          </button>
+          {/* Satellite tab temporarily disabled for debugging */}
         </div>
 
         {activeTab === 'submit' ? (
@@ -643,56 +633,10 @@ const CommunityVerification = () => {
             ))}
           </div>
         ) : (
-          // Satellite Analysis Tab
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-semibold flex items-center space-x-2">
-                  <Satellite className="w-6 h-6 text-blue-600" />
-                  <span>Satellite Analysis</span>
-                </h2>
-                <p className="text-muted-foreground">AI-powered satellite imagery analysis for restoration verification</p>
-              </div>
-              <div className="flex items-center space-x-4 text-sm">
-                <div className="flex items-center space-x-2">
-                  <TrendingUp className="w-4 h-4" />
-                  <span>Real-time Data</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Satellite Analysis Content */}
-            <div className="grid gap-6">
-              {/* Sample Project for Analysis */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Pichavaram Mangrove Restoration - Satellite Analysis</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <SatelliteViewer
-                    coordinates={{ lat: 11.4270, lng: 79.7729 }}
-                    projectArea={75}
-                    beforeDate="2024-01-15"
-                    afterDate="2024-09-28"
-                    onAnalysisComplete={(result) => setSatelliteAnalysis(result)}
-                  />
-                </CardContent>
-              </Card>
-
-              {/* Time Series Monitoring */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Restoration Progress Monitoring</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <TimeSeriesMonitor
-                    coordinates={{ lat: 11.4270, lng: 79.7729 }}
-                    startDate="2024-01-15"
-                    endDate="2024-09-28"
-                    projectName="Pichavaram Mangrove Restoration"
-                  />
-                </CardContent>
-              </Card>
+            <div className="text-center py-8">
+              <h3 className="text-lg font-semibold">Satellite Analysis</h3>
+              <p className="text-muted-foreground mt-2">Feature temporarily disabled for stability</p>
             </div>
           </div>
         )}
