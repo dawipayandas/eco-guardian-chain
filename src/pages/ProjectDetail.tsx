@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useParams, Link } from 'react-router-dom';
 import { 
   ArrowLeft, 
@@ -12,7 +14,9 @@ import {
   Shield,
   ExternalLink,
   Calendar,
-  BarChart3
+  BarChart3,
+  X,
+  CheckCircle
 } from 'lucide-react';
 import { mockProjects } from '@/data/mockData';
 import mangroveProject from '@/assets/mangrove-project.jpg';
@@ -21,6 +25,13 @@ import satelliteImage from '@/assets/satellite-mangrove.jpg';
 const ProjectDetail = () => {
   const { id } = useParams();
   const [showPolygonScan, setShowPolygonScan] = useState(false);
+  const [showPurchaseSuccess, setShowPurchaseSuccess] = useState(false);
+  const [purchaseQuantity, setPurchaseQuantity] = useState(50);
+  const [purchaseData, setPurchaseData] = useState<{
+    quantity: number;
+    total: number;
+    transactionHash: string;
+  } | null>(null);
   
   const project = mockProjects.find(p => p.id === id);
   
@@ -45,6 +56,21 @@ const ProjectDetail = () => {
     { month: 'May', co2: 110 },
     { month: 'Jun', co2: 150 },
   ];
+
+  const handlePurchase = () => {
+    const total = purchaseQuantity * project.pricePerCredit;
+    const mockTransactionHash = `0x9f2c1e78a4bd${Math.random().toString(16).slice(2, 8)}...`;
+    
+    setPurchaseData({
+      quantity: purchaseQuantity,
+      total,
+      transactionHash: mockTransactionHash
+    });
+    
+    setShowPurchaseSuccess(true);
+  };
+
+  const totalPurchaseAmount = purchaseQuantity * project.pricePerCredit;
 
   return (
     <div className="min-h-screen bg-background">
@@ -242,40 +268,62 @@ const ProjectDetail = () => {
           <div className="space-y-6">
             {/* Investment Card */}
             <div className="card-elevated p-6">
-              <h3 className="text-lg font-semibold mb-4">Investment Details</h3>
-              
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Price per Credit:</span>
-                  <span className="font-semibold">${project.pricePerCredit}</span>
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Credits Available</div>
+                  <div className="text-lg font-bold">{project.creditsAvailable.toLocaleString()}</div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Available Credits:</span>
-                  <span className="font-semibold">{project.creditsAvailable}</span>
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Price / Credit</div>
+                  <div className="text-lg font-bold">${project.pricePerCredit}</div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Total Value:</span>
-                  <span className="font-semibold text-primary">
-                    ${(project.creditsAvailable * project.pricePerCredit).toLocaleString()}
-                  </span>
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-1">Total CO₂</div>
+                  <div className="text-lg font-bold">{project.totalCO2.toLocaleString()} Tons</div>
                 </div>
               </div>
               
               {project.status === 'verified' ? (
-                <Button variant="hero" size="lg" className="w-full mb-3">
-                  <DollarSign className="w-5 h-5 mr-2" />
-                  Invest Now
-                </Button>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                      Purchase Credits
+                    </label>
+                    <div className="flex items-center space-x-3">
+                      <Input
+                        type="number"
+                        value={purchaseQuantity}
+                        onChange={(e) => setPurchaseQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                        min="1"
+                        max={project.creditsAvailable}
+                        className="flex-1"
+                      />
+                      <div className="text-sm font-medium">
+                        Total: ${totalPurchaseAmount.toLocaleString()}
+                      </div>
+                      <Button 
+                        variant="primary" 
+                        onClick={handlePurchase}
+                        className="px-6"
+                      >
+                        Buy
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowPolygonScan(true)}
+                    className="w-full"
+                  >
+                    View on PolygonScan
+                  </Button>
+                </div>
               ) : (
                 <Button variant="outline" size="lg" className="w-full mb-3" disabled>
                   {project.status === 'pending' ? 'Pending Verification' : 'Fully Funded'}
                 </Button>
               )}
-              
-              <div className="text-xs text-muted-foreground text-center">
-                <Calendar className="w-3 h-3 inline mr-1" />
-                Listed {project.createdAt.toLocaleDateString()}
-              </div>
             </div>
 
             {/* Satellite View */}
@@ -294,49 +342,64 @@ const ProjectDetail = () => {
         </div>
       </div>
 
-      {/* PolygonScan Modal */}
-      {showPolygonScan && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[80vh] overflow-auto">
-            <div className="p-6 border-b">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">PolygonScan Transaction Details</h3>
-                <Button variant="ghost" onClick={() => setShowPolygonScan(false)}>
-                  ×
-                </Button>
+      {/* Purchase Success Modal */}
+      <Dialog open={showPurchaseSuccess} onOpenChange={setShowPurchaseSuccess}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <CheckCircle className="w-5 h-5 text-success" />
+              <span>Purchase Successful</span>
+            </DialogTitle>
+          </DialogHeader>
+          {purchaseData && (
+            <div className="space-y-3 text-sm">
+              <div>
+                <span className="font-medium">Txn Hash: </span>
+                <span className="font-mono text-muted-foreground">{purchaseData.transactionHash}</span>
+              </div>
+              <div>
+                <span className="font-medium">Credits Purchased: </span>
+                <span>{purchaseData.quantity}</span>
+              </div>
+              <div>
+                <span className="font-medium">Status: </span>
+                <span className="text-success">Success</span>
               </div>
             </div>
-            <div className="p-6">
-              <div className="space-y-4 font-mono text-sm">
-                <div className="grid grid-cols-3 gap-4 p-3 bg-muted/30 rounded">
-                  <span className="font-medium">Transaction Hash:</span>
-                  <span className="col-span-2 text-primary">{project.transactionHash}</span>
-                </div>
-                <div className="grid grid-cols-3 gap-4 p-3 bg-muted/30 rounded">
-                  <span className="font-medium">Status:</span>
-                  <span className="col-span-2 text-success">Success</span>
-                </div>
-                <div className="grid grid-cols-3 gap-4 p-3 bg-muted/30 rounded">
-                  <span className="font-medium">Block:</span>
-                  <span className="col-span-2">52,847,291</span>
-                </div>
-                <div className="grid grid-cols-3 gap-4 p-3 bg-muted/30 rounded">
-                  <span className="font-medium">From:</span>
-                  <span className="col-span-2">0x742d35Cc6634C0532925a3b8D4063...5f9B</span>
-                </div>
-                <div className="grid grid-cols-3 gap-4 p-3 bg-muted/30 rounded">
-                  <span className="font-medium">To:</span>
-                  <span className="col-span-2">0x1a2b3c4d5e6f7890abcdef1234567...def12</span>
-                </div>
-                <div className="grid grid-cols-3 gap-4 p-3 bg-muted/30 rounded">
-                  <span className="font-medium">Token ID:</span>
-                  <span className="col-span-2">BGT-{project.id}-{project.creditsAvailable}</span>
-                </div>
-              </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* PolygonScan Modal */}
+      <Dialog open={showPolygonScan} onOpenChange={setShowPolygonScan}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>PolygonScan</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 text-sm">
+            <div>
+              <span className="font-medium">Txn Hash: </span>
+              <span className="font-mono text-muted-foreground">{project.transactionHash}</span>
+            </div>
+            <div>
+              <span className="font-medium">From: </span>
+              <span className="font-mono text-muted-foreground">0x2d3...a1b</span>
+            </div>
+            <div>
+              <span className="font-medium">To: </span>
+              <span className="font-mono text-muted-foreground">0x7ae...4c9</span>
+            </div>
+            <div>
+              <span className="font-medium">Value: </span>
+              <span>{purchaseQuantity || 50} Carbon Credits</span>
+            </div>
+            <div>
+              <span className="font-medium">Status: </span>
+              <span className="text-success">Success</span>
             </div>
           </div>
-        </div>
-      )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Leaf, TrendingUp, Shield, Globe } from 'lucide-react';
+import { Leaf, TrendingUp, Shield, Globe, ArrowRight, Users } from 'lucide-react';
 import heroImage from '@/assets/hero-mangrove.jpg';
 
 const Landing = () => {
@@ -37,6 +37,12 @@ const Landing = () => {
                 <Button variant="glassmorphism" size="xl" className="w-full sm:w-auto">
                   <TrendingUp className="w-5 h-5" />
                   I'm an Investor
+                </Button>
+              </Link>
+              <Link to="/community-verification">
+                <Button variant="outline" size="xl" className="w-full sm:w-auto text-white border-white/30 hover:bg-white/10">
+                  <Users className="w-5 h-5" />
+                  Community Verifier
                 </Button>
               </Link>
             </div>

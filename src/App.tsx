@@ -8,6 +8,7 @@ import NGODashboard from "./pages/NGODashboard";
 import VerificationFlow from "./pages/VerificationFlow";
 import ProjectSubmission from "./pages/ProjectSubmission";
 import VerificationManagement from "./pages/VerificationManagement";
+import CommunityVerification from "./pages/CommunityVerification";
 import InvestorMarketplace from "./pages/InvestorMarketplace";
 import ProjectDetail from "./pages/ProjectDetail";
 import InvestorPortfolio from "./pages/InvestorPortfolio";
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/investor" element={<InvestorMarketplace />} />
           <Route path="/investor/project/:id" element={<ProjectDetail />} />
           <Route path="/investor/portfolio" element={<InvestorPortfolio />} />
+          <Route path="/community-verification" element={<CommunityVerification />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
