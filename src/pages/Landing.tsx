@@ -22,8 +22,7 @@ const Landing = () => {
               Blue Guardian
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              Verifiable climate restoration powered by AI and blockchain technology.
-              Connect NGOs with investors for transparent, impactful environmental projects.
+              Connects the investors with local communities for a transparent, AI-verified climate restoration secured by blockchain.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
